@@ -2,9 +2,9 @@
   "name": "mongoose-slug",
   "author": "Amir Abu Shareb <yields@icloud.com>",
   "keywords": ["slug", "mongoose"],
-  "version": "0.0.1",
+  "version": "1.0.0",
   "dependencies": {
-    "slug-component": "*"
+    "slug-component": "1.0.0"
   },
   "devDependencies": {
     "mocha": "*",
