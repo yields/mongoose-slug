@@ -11,20 +11,22 @@ var slug = require('slug-component');
  * Usage:
  *
  *      mySchema.plugin(slug('title'));
+ *      
+ * Options:
+ * 
+ *      - `.replace` characters to replace defaulted to `[^a-zA-Z]`
+ *      - `.separator` separator to use, defaulted to `-`
  *
  * @param {String} prop
+ * @param {Object} options
  * @return {Function}
  */
 
-module.exports = function(prop){
+module.exports = function(prop, opts){
   return (function slugize(schema){
     schema.add({ slug: String });
-    schema.pre('save', function(next){
-      prop = prop || 'title';
-      var title = this[prop];
-      if (title) return this.slug = slug(title), next();
-      next(new Error('[mongoose-slug]: Cannot create a slug property `'
-        + (prop || 'title') + '` is missing.'));
+    schema.path(prop || 'title').set(function(v){
+      this.slug = slug(v, opts);
     });
   });
 };

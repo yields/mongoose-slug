@@ -13,21 +13,9 @@ describe('mongoose-slug', function(){
     mongoose.connect(to);
   })
 
-  it('should populate `.slug` property', function(done){
-    new Artist({ title: 'some artist' })
-      .save(function(err, doc){
-        if (err) return done(err);
-        doc.slug.should.eql('some-artist');
-        done();
-      });
-  })
-
-  it('should return an error if the property does not exist', function(done){
-    new Artist().save(function(err, doc){
-      err.should.be.instanceOf(Error);
-      err.message.should.include('[mongoose-slug]');
-      done();
-    });
+  it('should populate `.slug` property', function(){
+    var artist = new Artist({ title: 'some artist '});
+    artist.slug.should.eql('some-artist');
   })
 
 })
