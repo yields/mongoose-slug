@@ -25,8 +25,11 @@ var slug = require('slug-component');
 module.exports = function(prop, opts){
   return (function slugize(schema){
     schema.add({ slug: String });
-    schema.path(prop || 'title').set(function(v){
-      this.slug = slug(v, opts);
+    schema.pre('save', function(next){
+      var title = this[prop || 'title'];
+      if (!title) return next(new Error(prop + ' is required to create a slug'));
+      this.slug = slug(title, opts);
+      next();
     });
   });
 };

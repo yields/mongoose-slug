@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , model = mongoose.model.bind(mongoose)
   , slug = require('..')
-  , schema = Schema({ title: String }).plugin(slug())
+  , schema = Schema({ title: String, baz: String }).plugin(slug())
   , Artist = model('Artist', schema)
   , to = require('./db');
 
@@ -13,9 +13,20 @@ describe('mongoose-slug', function(){
     mongoose.connect(to);
   })
 
-  it('should populate `.slug` property', function(){
-    var artist = new Artist({ title: 'some artist '});
-    artist.slug.should.eql('some-artist');
+  it('should create the slug', function(done){
+    new Artist({ title: 'some artist'})
+    .save(function(err, doc){
+      if (err) return done(err);
+      doc.title.should.eql('some artist');
+      doc.slug.should.eql('some-artist');
+      done();
+    })
+  })
+
+  after(function(done){
+    Artist.remove({
+      title: 'some artist'
+    }, done);
   })
 
 })
