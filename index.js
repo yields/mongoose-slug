@@ -16,6 +16,7 @@ var slug = require('slug-component');
  * 
  *      - `.replace` characters to replace defaulted to `[^a-zA-Z]`
  *      - `.separator` separator to use, defaulted to `-`
+ *      - `required` whether a slug is required, defaults to `true`
  *
  * @param {String} prop
  * @param {Object} options
