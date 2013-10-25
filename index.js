@@ -29,7 +29,8 @@ module.exports = function(prop, opts){
     schema.add({ slug: String });
     schema.pre('save', function(next){
 			var self = this;
-			if(prop && Array.isArray(prop)) {
+			
+			if (prop && Array.isArray(prop)) {
 				var titles = [];
 				prop.forEach(function(el){
 					titles.push(self[el]);
