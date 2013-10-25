@@ -28,7 +28,7 @@ var slug = require('mongoose-slug');
 schema.plugin(slug(['firstName', 'lastName']));
 var Person = mongoose.model('Person', schema);
 
-var person = new Person({firstName: 'John', lastName: 'Doe});
+var person = new Person({firstName: 'John', lastName: 'Doe'});
 
 person.save(function(err, person) {
 person.slug; // > john-doe	
