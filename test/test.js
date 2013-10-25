@@ -1,10 +1,9 @@
 
 var mongoose = require('mongoose')
+	, should = require('should')
   , Schema = mongoose.Schema
   , model = mongoose.model.bind(mongoose)
   , slug = require('..')
-  , schema = Schema({ title: String, baz: String }).plugin(slug())
-  , Artist = model('Artist', schema)
   , to = require('./db');
 
 describe('mongoose-slug', function(){
@@ -13,7 +12,10 @@ describe('mongoose-slug', function(){
     mongoose.connect(to);
   })
 
-  it('should create the slug', function(done){
+  it('should create the slug with default source property(title)', function(done){
+	  var schema = Schema({ title: String, baz: String }).plugin(slug())
+	  , Artist = model('Artist', schema);
+	
     new Artist({ title: 'some artist'})
     .save(function(err, doc){
       if (err) return done(err);
@@ -23,10 +25,28 @@ describe('mongoose-slug', function(){
     })
   })
 
+  it('should create the slug with multiple source property', function(done){
+	  var personSchema = Schema({ name: String, occupation: String }).plugin(slug(['name', 'occupation']))
+	  , Person = model('Person', personSchema);
+	
+    new Person({ name: 'John Doe', occupation: 'Scam Artist'})
+    .save(function(err, doc){
+      if (err) return done(err);
+      doc.name.should.eql('John Doe');
+			doc.occupation.should.eql('Scam Artist');
+      doc.slug.should.eql('john-doe-scam-artist');
+      done();
+    })
+  })
+
   after(function(done){
-    Artist.remove({
+    model('Artist').remove({
       title: 'some artist'
-    }, done);
+    }, function () {
+			model('Person').remove({
+				name: 'John Doe'
+			}, done)
+		});
   })
 
 })
