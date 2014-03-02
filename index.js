@@ -3,7 +3,7 @@
  * deps
  */
 
-var slug = require('slug-component');
+var slug = require('speakingurl');
 
 /**
  * slug plugin.
