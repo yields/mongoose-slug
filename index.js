@@ -27,6 +27,11 @@ module.exports = function(prop, opts){
   return (function slugize(schema){
     var title;
     schema.add({ slug: String });
+
+    if (opts && opts.track) {
+      schema.add({ slugs: [ String ] });
+    }
+
     schema.pre('save', function(next){
       var self = this;
 
@@ -40,10 +45,13 @@ module.exports = function(prop, opts){
         title = this[prop || 'title'];
       }
 
-      var require = (opts && !opts.required) ? false : true
+      var require = (opts && opts.required == false) ? false : true
         , presets = (opts && opts.override) ? true : false;
       if (require && !title) return next(new Error(prop + ' is required to create a slug'));
-      if (title && !presets) self.slug = slug(title, opts);
+
+      var mySlug = slug(title, opts);
+      if (opts && opts.track && self.slugs && self.slugs.indexOf( mySlug) == -1) self.slugs.push( mySlug );
+      if (title && !presets) self.slug = mySlug;
       next();
     });
   });
