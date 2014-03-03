@@ -3,7 +3,7 @@
  * deps
  */
 
-var slug = require('slug-component');
+var slug = require('speakingurl');
 
 /**
  * slug plugin.
@@ -40,9 +40,10 @@ module.exports = function(prop, opts){
         title = this[prop || 'title'];
       }
 
-      var require = (opts && !opts.required) ? false : true;
+      var require = (opts && !opts.required) ? false : true
+        , presets = (opts && opts.override) ? true : false;
       if (require && !title) return next(new Error(prop + ' is required to create a slug'));
-      if (title) self.slug = slug(title, opts);
+      if (title && !presets) self.slug = slug(title, opts);
       next();
     });
   });
