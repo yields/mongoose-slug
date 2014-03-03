@@ -1,4 +1,12 @@
 
+1.3.0 / 2014-03-03
+==================
+
+ * use `speakingurl` instead of `component-slug`.
+ * Update schema, correct conditions.
+ * Implement UTF8 support, change version to reflect.
+ * Default to not allow overrides.
+
 1.2.0 / 2013-10-26
 ==================
 
