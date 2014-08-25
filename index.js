@@ -26,7 +26,12 @@ var slug = require('speakingurl');
 module.exports = function(prop, opts){
   return (function slugize(schema){
     var title;
-    schema.add({ slug: String });
+    schema.add({
+      slug: {
+        type: 'String',
+        unique: (opts && opts.unique) ? true : false
+      }
+    });
 
     if (opts && opts.track) {
       schema.add({ slugs: [ String ] });
